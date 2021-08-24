@@ -2,6 +2,6 @@ streamlit
 Pillow
 numpy
 pytesseract
-opencv-python
+opencv-python-headless==4.2.0.32
 scikit-image
 skia-python
