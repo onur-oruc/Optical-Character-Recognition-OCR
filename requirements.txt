@@ -4,13 +4,3 @@ from PIL import Image
 import numpy as np
 import os
 import json
-import cv2
-import skimage.color
-import skimage.filters
-import skimage.io
-import re
-import argparse
-import pytesseract
-from pytesseract import Output
-
-
