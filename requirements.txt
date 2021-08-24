@@ -4,3 +4,4 @@ numpy
 pytesseract
 opencv-python
 scikit-image
+skia-python
