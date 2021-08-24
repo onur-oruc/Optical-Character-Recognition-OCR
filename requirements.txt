@@ -3,4 +3,4 @@ Pillow
 numpy
 pytesseract
 opencv-python
-
+scikit-image
