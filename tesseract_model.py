@@ -4,6 +4,8 @@ import os
 import argparse
 import helper
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\USER\AppData\Local\Tesseract-OCR\tesseract.exe'
+
 
 # process one image, create metadata and return
 def ocr_one_image(the_image):
