@@ -1,6 +1,6 @@
-import streamlit as st
-import tesseract_model
-from PIL import Image
-import numpy as np
-import os
-import json
+streamlit
+tesseract_model
+PIL
+numpy
+os
+json
