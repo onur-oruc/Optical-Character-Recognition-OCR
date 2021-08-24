@@ -13,7 +13,6 @@ def ocr_one_image(the_image):
     website = []
 
     # ocr the image and set necessary parameters
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     output = pytesseract.image_to_data(the_image, output_type=Output.DICT)
     the_text = output["text"]
     the_length = len(the_text)
