@@ -3,6 +3,7 @@ from pytesseract import Output
 import os
 import argparse
 import helper
+import cv2
 
 
 # process one image, create metadata and return
@@ -71,42 +72,46 @@ if __name__ == '__main__':
         print("please enter a valid mode")
         exit()
 
-    for i in range(len(os.listdir(folder))):
-        # open the appropriate file
-        if mode == 0:
-            f = open(r"D:\Dersler\CS\Staj\JotForm\all.txt", "a", encoding='utf-8')
-        elif mode == 1:
-            f = open(r"D:\Dersler\CS\Staj\JotForm\emails.txt", "a", encoding='utf-8')
-        elif mode == 2:
-            f = open(r"D:\Dersler\CS\Staj\JotForm\urls.txt", "a", encoding='utf-8')
+    # open the appropriate file
+    if mode == 0:
+        f = open(os.path.join(folder, "all.json"), "a", encoding='utf-8')
+    elif mode == 1:
+        f = open(os.path.join(folder, "emails.json"), "a", encoding='utf-8')
+    elif mode == 2:
+        f = open(os.path.join(folder, "urls.json"), "a", encoding='utf-8')
 
-        image = helper.load_image_from_folder(folder, i)
+    for file in os.listdir(folder):
+        image = cv2.imread(os.path.join(folder, file))
+        # image = helper.load_image_from_folder(folder, i)
 
-        out = pytesseract.image_to_data(image, output_type=Output.DICT)
-        text = out["text"]
-        length = len(text)
-        count = 0
-        starts_with_space = True  # to prevent printing empty spaces on the console if the text contains empty elements.
+        image_format = [".jpg", ".png", ".jpeg"]
+        if file.endswith(tuple(image_format)):
+            out = pytesseract.image_to_data(image, output_type=Output.DICT)
+            text = out["text"]
+            length = len(text)
+            count = 0
+            starts_with_space = True  # to prevent printing empty spaces on the console if
+                                      # the text contains empty elements.
 
-        while count < length:
-            if text[count] != "" or text[count] != " ":
-                for k in range(count, length):
-                    if text[k] != "":
-                        if functions[mode](text[k]):
-                            print(text[k], " ", end="")
-                            # write the text evaluated from the image into a file.
-                            f.write(text[k].ljust(50) + "image-" + str(i) + "\n")
-                            starts_with_space = False
-                            count = k
-                    else:
-                        non_empty_index = k
-                        for x in range(non_empty_index, length):
-                            if text[x] != '' and text[x] != " ":
-                                count = x - 1
-                                if not starts_with_space:
-                                    print()
-                                break
-                        break
-            count += 1
-
-        print("\n")
+            while count < length:
+                if text[count] != "" or text[count] != " ":
+                    for k in range(count, length):
+                        if text[k] != "":
+                            if functions[mode](text[k]):
+                                # print(text[k], " ", end="")
+                                print(text[k])
+                                # write the text evaluated from the image into a file.
+                                f.write(text[k].ljust(50) + "\n")
+                                starts_with_space = False
+                                count = k
+                        else:
+                            non_empty_index = k
+                            for x in range(non_empty_index, length):
+                                if text[x] != '' and text[x] != " ":
+                                    count = x - 1
+                                    if not starts_with_space:
+                                        # print()
+                                        pass
+                                    break
+                            break
+                count += 1
